@@ -11,11 +11,10 @@ class MainUnitTest(unittest.TestCase):
 
 		httpRequest = Mock(spec=HttpRequest)
 		httpRequest.GetPostedJSONObject = Mock(return_value={'x': 1.1, 'y': 2.2, 'z': 3.3})
-		#httpRequest.Response = Mock() #Mock(spec=HttpRequest.HttpResponse)
 
 		main.MoveLinear(None, httpRequest)
-		main.ev3Service.MoveLinear.assert_called_with(1.1, 2.2, 3.3)
-		#httpRequest.Response.ReturnOk.called()
+		main.ev3Service.MoveLinear.assert_called_once_with(1.1, 2.2, 3.3)
+		httpRequest.Response.ReturnOk.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()
