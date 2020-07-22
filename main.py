@@ -33,21 +33,21 @@ def MoveLinear(microWebSrv2, request):
 	)
 	request.Response.ReturnOk()
 
+if __name__ == '__main__':
+	# Instanciates the MicroWebSrv2 class,
+	mws2 = MicroWebSrv2()
 
-# Instanciates the MicroWebSrv2 class,
-mws2 = MicroWebSrv2()
+	# For embedded MicroPython, use a very light configuration,
+	mws2.SetEmbeddedConfig()
 
-# For embedded MicroPython, use a very light configuration,
-mws2.SetEmbeddedConfig()
+	# Starts the server as easily as possible in managed mode,
+	mws2.BindAddress = ('0.0.0.0', 8080)
 
-# Starts the server as easily as possible in managed mode,
-mws2.BindAddress = ('0.0.0.0', 8080)
-
-mws2.StartManaged()
+	mws2.StartManaged()
 
 
-try :
-	while mws2.IsRunning :
-		sleep(1)
-except KeyboardInterrupt :
-	pass
+	try :
+		while mws2.IsRunning :
+			sleep(1)
+	except KeyboardInterrupt :
+		pass
