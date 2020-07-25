@@ -21,6 +21,22 @@ def GoTostart(microWebSrv2, request):
 	_logger.info('')
 	request.Response.ReturnOk()
 
+@WebRoute(GET, '/motor/commands/<port>')
+def MotorCommands(microWebSrv2, request, args):
+	try:
+		_logger.info(args['port'])
+		port = args['port'].lower()
+		allowedPorts = ['a', 'b', 'c', 'd']
+		if port not in allowedPorts:
+			request.Response.ReturnBadRequest()
+			return
+		commands = ev3Service.MotorCommands(port)
+		_logger.info(commands)
+		request.Response.ReturnOkJSON(commands)
+	except Exception as error:
+		_logger.exception(error)
+
+
 @WebRoute(POST, '/move-linear')
 def MoveLinear(microWebSrv2, request):
 	jsonObect = request.GetPostedJSONObject()
