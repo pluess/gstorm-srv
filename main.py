@@ -45,23 +45,25 @@ def MotorReset(microWebSrv2, request, args):
 		if port not in allowedPorts:
 			request.Response.ReturnBadRequest()
 			return
-		commands = ev3Service.MotorReset(port)
-		_logger.info(commands)
+		ev3Service.MotorReset(port)
 		request.Response.ReturnOk()
 	except Exception as error:
 		_logger.exception(error)
 
 @WebRoute(POST, '/move-linear')
 def MoveLinear(microWebSrv2, request):
-	jsonObect = request.GetPostedJSONObject()
-	global _logger
-	_logger.info(jsonObect)
-	ev3Service.MoveLinear(
-		jsonObect['x'],
-		jsonObect['y'],
-		jsonObect['z'],
-	)
-	request.Response.ReturnOk()
+	try:
+		jsonObect = request.GetPostedJSONObject()
+		global _logger
+		_logger.info(jsonObect)
+		ev3Service.MoveLinear(
+			jsonObect['x'],
+			jsonObect['y'],
+			jsonObect['z'],
+		)
+		request.Response.ReturnOk()
+	except Exception as error:
+		_logger.exception(error)
 
 if __name__ == '__main__':
 	# Instanciates the MicroWebSrv2 class,
