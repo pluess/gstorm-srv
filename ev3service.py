@@ -11,7 +11,7 @@ class Ev3Service:
 	oneMmX = 360/100
 	oneMmY = 360/100
 	oneMmZ = 360/100
-	speedMax = 20
+	speedMax = 50
 
 	x1 = 0.0
 	y1 = 0.0
@@ -32,6 +32,9 @@ class Ev3Service:
 		mZ.on_for_degrees(self.speedMax, self.oneMmZ*dz, block=True)
 		mX.on_for_degrees(speedX, self.oneMmX*dx, block=False)
 		mY.on_for_degrees(speedY, self.oneMmY*dy, block=False)
+		mX.wait_until_not_moving()
+		mY.wait_until_not_moving()
+		mZ.wait_until_not_moving()
 
 		self.x1 = x2
 		self.y1 = y2

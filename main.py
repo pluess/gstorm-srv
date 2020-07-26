@@ -16,11 +16,6 @@ _logger.setLevel(logging.DEBUG)
 
 ev3Service = Ev3Service()
 
-@WebRoute(GET, '/gotostart')
-def GoTostart(microWebSrv2, request):
-	_logger.info('')
-	request.Response.ReturnOk()
-
 @WebRoute(GET, '/motor/commands/<port>')
 def MotorCommands(microWebSrv2, request, args):
 	try:
