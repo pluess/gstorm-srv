@@ -28,3 +28,17 @@ class Ev3Service:
 		except DeviceNotFound:
 			return list()
 
+	def MotorReset(self, port):
+		self._logger.info(port)
+		ports = {
+			'a': OUTPUT_A,
+			'b': OUTPUT_B,
+            'c': OUTPUT_C,
+			'd': OUTPUT_D
+		}
+		try:
+			motor = Motor(ports[port])
+			motor.reset()
+		except DeviceNotFound as err:
+			self._logger.warn(err.message)
+			pass

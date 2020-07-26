@@ -36,6 +36,20 @@ def MotorCommands(microWebSrv2, request, args):
 	except Exception as error:
 		_logger.exception(error)
 
+@WebRoute(GET, '/motor/reset/<port>')
+def MotorReset(microWebSrv2, request, args):
+	try:
+		_logger.info(args['port'])
+		port = args['port'].lower()
+		allowedPorts = ['a', 'b', 'c', 'd']
+		if port not in allowedPorts:
+			request.Response.ReturnBadRequest()
+			return
+		commands = ev3Service.MotorReset(port)
+		_logger.info(commands)
+		request.Response.ReturnOk()
+	except Exception as error:
+		_logger.exception(error)
 
 @WebRoute(POST, '/move-linear')
 def MoveLinear(microWebSrv2, request):

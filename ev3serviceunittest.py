@@ -12,12 +12,17 @@ class Ev3ServiceUnitTest(unittest.TestCase):
 		motorMock.return_value.commands = returnValueList
 
 		commands = ev3s.MotorCommands('b')
-		self.assertEquals(commands, returnValueList)
+		self.assertEqual(commands, returnValueList)
 
 	def test_MotorCommands_WithWrongPort(self):
 		ev3s = ev3service.Ev3Service()
 		self.assertRaises(KeyError, ev3s.MotorCommands, 'y')
 
+	@patch('ev3service.Motor', autospec=True)
+	def test_MotorReset(self, motorMock):
+		ev3s = ev3service.Ev3Service()
+		ev3s.MotorReset('b')
+		motorMock.return_value.reset.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()
