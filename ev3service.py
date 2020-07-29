@@ -11,7 +11,9 @@ class Ev3Service:
 	oneMmX = 360/100
 	oneMmY = 360/100
 	oneMmZ = 360/100
+	
 	speedMax = 50
+	angleStep = 2 * math.pi / 360 # EV3 motor has 1° resultion
 
 	x1 = 0.0
 	y1 = 0.0
@@ -39,6 +41,26 @@ class Ev3Service:
 		self.x1 = x2
 		self.y1 = y2
 		self.z1 = z2
+
+	def MoveArc(self, x2, y2, z2, dx1, dy1, clockwise):
+		xCenter = self.x1 + dx1
+		yCenter = self.y1 + dy1
+
+		alpha1 = self.Angle(xCenter, yCenter, self.x1, self.y1)
+		alpha2 = self.Angle(xCenter, yCenter, x2, y2, )
+
+		alpha = alpha1
+		r = math.sqrt(math.pow(dx1, 2) + math.pow(dy1, 2))
+		while (alpha > alpha2):
+			alpha -= self.angleStep
+			if (alpha < alpha2):
+				alpha = alpha2
+			xa = math.cos(alpha) * r + xCenter
+			ya = math.sin(alpha) * r + yCenter
+			self.MoveLinear(xa, ya, self.z1)
+			self.x1 = x2
+			self.y1 = y2
+			self.z1 = z2
 
 	def MotorCommands(self, port):
 		self._logger.info(port)
@@ -71,6 +93,11 @@ class Ev3Service:
 			self._logger.warn(err.message)
 			pass
 
+	def Angle(self, x, y, xCenter, yCenter):
+		dx = xCenter - x
+		dy = yCenter - y
+		return  math.atan2(dy, dx)
+			
 	"""
 	To get a straigt line, the speed for the x and the y-motor must respect
 	the ration between the x and y-travel. This ration id given by
